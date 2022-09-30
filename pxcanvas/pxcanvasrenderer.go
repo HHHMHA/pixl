@@ -1,7 +1,6 @@
 package pxcanvas
 
 import (
-	"fyne.io/fyne"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
 )
@@ -10,6 +9,11 @@ type PxCanvasRenderer struct {
 	pxCanvas     *PxCanvas
 	canvasImage  *canvas.Image
 	canvasBorder []canvas.Line
+	canvasCursor []fyne.CanvasObject
+}
+
+func (renderer *PxCanvasRenderer) SetCursor(objects []fyne.CanvasObject) {
+	renderer.canvasCursor = objects
 }
 
 func (renderer *PxCanvasRenderer) MinSize() fyne.Size {
@@ -22,12 +26,11 @@ func (renderer *PxCanvasRenderer) Objects() []fyne.CanvasObject {
 		objects = append(objects, &renderer.canvasBorder[i])
 	}
 	objects = append(objects, renderer.canvasImage)
+	objects = append(objects, renderer.canvasCursor...)
 	return objects
 }
 
-func (renderer *PxCanvasRenderer) Destroy() {
-
-}
+func (renderer *PxCanvasRenderer) Destroy() {}
 
 func (renderer *PxCanvasRenderer) Layout(size fyne.Size) {
 	renderer.LayoutCanvas(size)
